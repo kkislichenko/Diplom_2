@@ -1,7 +1,9 @@
 package user;
 
+import com.google.gson.Gson;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,24 +12,37 @@ import api.data.user.UserRegistration;
 import api.data.user.response.UserCheckResponse;
 import api.data.user.response.UserTakeResponse;
 
+import java.util.HashMap;
+
 @RunWith(Parameterized.class)
 public class ChangeUserDataTest {
     UserTakeResponse userTakeResponse = new UserTakeResponse();
     UserCheckResponse userCheckResponse = new UserCheckResponse();
     private String accessToken;
     private String newData;
+    private String key;
+    private String value;
 
-    public ChangeUserDataTest(String newData) {
-        this.newData = newData;
+    public ChangeUserDataTest(String key, String value) {
+        this.key = key;
+        this.value = value;
     }
 
     @Parameterized.Parameters
     public static Object[] getOrderData() {
         return new Object[][] {
-                {String.format("{\"email\": \"%s\"}", RandomData.randomEmail())},
-                {"{\"password\": \"newpPasswordAutotest\"}"},
-                {"{\"name\": \"newNameAutotest\"}"},
+                {"email", RandomData.randomEmail()},
+                {"password", "newPasswordAutotest"},
+                {"name", "newNameAutotest"},
         };
+    }
+
+    @Before
+    public void setUp() {
+        HashMap<String, String> newDataForUser = new HashMap<>();
+        newDataForUser.put(key, value);
+        Gson gson = new Gson();
+        newData = gson.toJson(newDataForUser);
     }
 
     @DisplayName("Изменить эл. почту, пароль, имя авторизованного пользователя")
