@@ -12,12 +12,12 @@ public class OrderTakeResponse extends CommonPartOfRequest {
                     .and()
                     .body(ingredients)
                     .post(ORDERS_PATH)
-                    .then().log().all();
+                    .then();
         }else{
             return specification()
                     .body(ingredients)
                     .post(ORDERS_PATH)
-                    .then().log().all();
+                    .then();
         }
     }
 
@@ -26,11 +26,11 @@ public class OrderTakeResponse extends CommonPartOfRequest {
             return specification()
                     .auth().oauth2(accessToken)
                     .get(ORDERS_PATH)
-                    .then().log().all();
+                    .then();
         }else{
             return specification()
                     .get(ORDERS_PATH)
-                    .then().log().all();
+                    .then();
         }
     }
 }
